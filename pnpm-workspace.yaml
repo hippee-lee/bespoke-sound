@@ -1,0 +1,8 @@
+packages:
+  - 'packages/*'
+  - 'docs'
+
+shared-workspace-lockfile: true
+
+hoistPattern:
+  - '*'

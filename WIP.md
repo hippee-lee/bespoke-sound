@@ -1,0 +1,3 @@
+# Notes to self about where you left off...
+
+1. Just finished re-using blueprintui's custom eslint rules for that library.
