@@ -25,7 +25,7 @@ export class SoundObservable {
             try {
                 observer(event);
             } catch (error) {
-                console.error('The SOund Observer failed to notify:', error);
+                console.error('The Sound Observer failed to notify:', error);
             }
         })
     }

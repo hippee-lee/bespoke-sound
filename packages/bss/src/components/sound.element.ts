@@ -2,9 +2,9 @@ import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { themeManager } from '../themes/';
 import * as Tone from 'tone';
-import { SoundObservable } from '../api';
+import {AllEventTypes, SoundObservable} from '../api';
 
-//TODO: installing tone and building out the pieces so I can test it in a sample page of the docs.
+//TODO: installing tone and building out the pieces so I can test it.
 
 export class BssSound extends LitElement {
     @property({ type: Object }) observable!: SoundObservable;
@@ -13,7 +13,6 @@ export class BssSound extends LitElement {
         super.connectedCallback();
         // Subscribe to observable notifications
         this.observable.addObserver(this.handleEvent.bind(this));
-        this.observable.addObserver(() => this.handleEvent(type));
     }
 
     disconnectedCallback() {
@@ -22,7 +21,7 @@ export class BssSound extends LitElement {
         this.observable.removeObserver(this.handleEvent.bind(this));
     }
 
-    handleEvent(type: string) {
+    handleEvent( type: AllEventTypes) {
         // Look up the sound for the event type
         const sound = themeManager.getSound(type);
         if (sound) {
