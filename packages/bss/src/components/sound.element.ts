@@ -1,38 +1,47 @@
 import { html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import { themeManager } from '../themes/';
-import * as Tone from 'tone';
-import {AllEventTypes, SoundObservable} from '../api';
-
-//TODO: installing tone and building out the pieces so I can test it.
+import { createProxy } from '@bss/sonic/api';
+import { SoundObservable } from '@bss/sonic/api';
+import { soundService } from '@bss/sonic/api';
+import { AllEventTypes } from '../api/events';
 
 export class BssSound extends LitElement {
-    @property({ type: Object }) observable!: SoundObservable;
+    // Allow a custom theme to be passed
+    @property({ type: Object }) theme: Partial<Record<AllEventTypes, string>> = {};
+
+    private observable = new SoundObservable();
 
     connectedCallback() {
         super.connectedCallback();
-        // Subscribe to observable notifications
+        this.proxyChildElements();
         this.observable.addObserver(this.handleEvent.bind(this));
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        // Unsubscribe to prevent memory leaks
-        this.observable.removeObserver(this.handleEvent.bind(this));
+        // Cleanup logic if necessary (e.g., remove proxies if dynamically added elements are supported)
     }
 
-    handleEvent( type: AllEventTypes) {
-        // Look up the sound for the event type
-        const sound = themeManager.getSound(type);
-        if (sound) {
-            // Play the sound
-            const synth = new Tone.Synth().toDestination();
-            synth.triggerAttackRelease(sound, '8n');
-        }
+    private proxyChildElements() {
+        const slot = this.shadowRoot?.querySelector('slot');
+        const elements = slot?.assignedElements() || [];
+
+        elements.forEach((el) => {
+            // Proxy the element
+            createProxy(el, {
+                observable: this.observable,
+                // theme: this.theme,
+            });
+        });
+    }
+
+    private handleEvent(event: { type: AllEventTypes; event: Event }) {
+        // Delegate the event to the sound service
+        soundService.handleEvent(event, this.theme);
     }
 
     render() {
-        return html`<slot></slot>`; // Pass-through slot for wrapped content
+        return html`<slot></slot>`;
     }
 }
 
