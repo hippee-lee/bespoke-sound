@@ -12,8 +12,13 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.30.2",
+    "@bss/sonic": "file:../packages/bss",
     "astro": "^5.0.9",
     "sharp": "^0.32.5",
     "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "vite": "^6.0.4"
   }
 }

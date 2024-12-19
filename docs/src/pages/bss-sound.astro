@@ -1,9 +1,46 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-// import CustomComponent from './CustomComponent.astro';
+import { createProxy } from '@bss/sonic/api/create-proxy'; // Import the proxy
+import { SoundObservable } from '@bss/sonic/api/event-observer'; // Import the SoundObservable
 ---
 
 <StarlightPage frontmatter={{ title: 'Bespoke Sound System' }}>
     <p>This is a web page with sonic feedback.</p>
-
+    <!-- You can now observe events in the proxied document -->
 </StarlightPage>
+
+<script>
+    import { createProxy } from '@bss/sonic/api/create-proxy';
+    import { SoundObservable } from '@bss/sonic/api/event-observer';
+
+    // Client-side logic
+    const observable = new SoundObservable(); // Instantiate SoundObservable
+    const proxiedDocument = createProxy(document, { observable });
+
+    // Example: Observe click events globally
+    proxiedDocument.addEventListener('click', (event) => {
+        console.log('Document clicked:', event);
+    });
+</script>
+
+<!--<script>-->
+<!--    import { createProxy } from '@bss/sonic/api/create-proxy';-->
+<!--    import { SoundObservable } from '@bss/sonic/api/event-observer';-->
+
+<!--    const observable = new SoundObservable(); // Instantiate SoundObservable-->
+
+<!--    // List of all event types to observe-->
+<!--    const allEventTypes = [-->
+<!--        'click', 'mousemove', 'keydown', 'keyup', 'focus', 'blur', 'scroll',-->
+<!--        'pointerdown', 'pointerup', 'pointermove', 'mouseenter', 'mouseleave',-->
+<!--        'dragstart', 'dragend', 'drop', 'resize', 'touchstart', 'touchend', 'wheel'-->
+<!--    ];-->
+
+<!--    // Proxy document to observe all events-->
+<!--    const proxiedDocument = createProxy(document, { observable, events: allEventTypes });-->
+
+<!--    // Log every observed event-->
+<!--    observable.addObserver((event) => {-->
+<!--        console.log(`Event observed: ${event.type}`, event.event);-->
+<!--    });-->
+<!--</script>-->

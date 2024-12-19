@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:sonic": "pnpm --filter=@bss/sonic build",
+    "build:docs": "pnpm --filter=docs build",
+    "docs:dev": "pnpm --filter=docs dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch:sonic": "pnpm --filter=@bss/sonic build:dev"
   },
   "keywords": [
     "web components",

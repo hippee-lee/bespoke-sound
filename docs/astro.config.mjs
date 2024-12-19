@@ -1,8 +1,27 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { defineConfig as defineViteConfig } from 'vite'; // Optional, for type checking
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// https://astro.build/config
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Inline Vite config
+const viteConfig = defineViteConfig({
+	resolve: {
+		alias: {
+			'@bss/sonic': path.resolve(__dirname, '../packages/bss/dist'),
+		},
+	},
+	server: {
+		watch: {
+			ignored: ['!../packages/bss/dist/**'], // Ensure changes in the dist folder trigger reload
+		},
+	},
+});
+
 export default defineConfig({
 	integrations: [
 		starlight({
@@ -14,7 +33,6 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
-						// Each item here is one entry in the navigation menu.
 						{ label: 'Example Guide', slug: 'guides/example' },
 					],
 				},
@@ -25,4 +43,5 @@ export default defineConfig({
 			],
 		}),
 	],
+	vite: viteConfig,
 });
