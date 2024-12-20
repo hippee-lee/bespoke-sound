@@ -1,6 +1,9 @@
 import { createProxy } from './api/create-proxy';
 import { SoundObservable } from './api/event-observer';
 import { FOCUS_EVENTS, MOUSE_EVENTS, KEYBOARD_EVENTS, POINTER_EVENTS } from './api/events';
+import * as Tone from "tone";
+
+const synth = new Tone.Synth().toDestination();
 
 // Singleton for SoundObservable
 const observable = new SoundObservable();
@@ -20,7 +23,10 @@ const proxiedWindow = createProxy(window, {
 
 // Log all observed events from the Observable
 observable.addObserver((event) => {
-    console.log(`Event observed by Observable: ${event.type}`, event.event);
+    if(event.type === 'click') {
+        synth.triggerAttackRelease('C4', "8n");
+        console.log(`Event observed by Observable: ${event.type}`, event.event);
+    }
 });
 
 // Export the observable and proxied window for extensibility
