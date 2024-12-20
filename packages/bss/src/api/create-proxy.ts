@@ -19,6 +19,7 @@ export function createProxy<T extends EventTarget>(target: T, options?: CreatePr
                 ) => {
                     if (events.includes(type)) {
                         const wrappedListener = (event: Event) => {
+                            console.log('Event intercepted by Proxy:', type, event);
                             if (observable) {
                                 observable.notify({ type, event });
                             }

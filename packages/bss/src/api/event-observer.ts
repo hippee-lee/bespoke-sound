@@ -13,6 +13,7 @@ export class SoundObservable {
     }
 
     addObserver(callback: SoundObserverCallback): void {
+        console.log('Observer added:', callback);
         this.observers.add(callback);
     }
 
@@ -21,6 +22,7 @@ export class SoundObservable {
     }
 
     notify(event: SoundObserverEvent): void {
+        console.log('Notifying observers:', event.type, event.event);
         this.observers.forEach(observer => {
             try {
                 observer(event);
